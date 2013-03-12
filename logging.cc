@@ -150,8 +150,8 @@ void InitLogging(const PathChar* new_log_file, LoggingDestination logging_dest,
 #else
   g_enable_dcheck = true;
 #endif
-  // TODO(quj): fix it
-  //      CommandLine::ForCurrentProcess()->HasSwitch(switches::kEnableDCHECK);
+  //TODO: switch log mutex
+  pthread_mutex_lock(&log_mutex);
 
   if (log_file) {
     // calling InitLogging twice or after some log call has already opened the
@@ -181,6 +181,9 @@ void InitLogging(const PathChar* new_log_file, LoggingDestination logging_dest,
   }
 
   InitializeLogFileHandle();
+  
+  //TODO: switch log mutex
+  pthread_mutex_unlock(&log_mutex);
 }
 
 void SetMinLogLevel(int level) {
