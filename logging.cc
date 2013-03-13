@@ -165,8 +165,10 @@ void InitLogging(const PathChar* new_log_file, LoggingDestination logging_dest,
 
   // ignore file options if logging is disabled or only to system
   if (logging_destination == LOG_NONE ||
-      logging_destination == LOG_ONLY_TO_SYSTEM_DEBUG_LOG)
+      logging_destination == LOG_ONLY_TO_SYSTEM_DEBUG_LOG) {
+    pthread_mutex_unlock(&log_mutex);
     return;
+  }
 
   if (!log_file_name)
     log_file_name = new PathString();
